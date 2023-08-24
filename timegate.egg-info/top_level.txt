@@ -1,3 +1,0 @@
-conf
-core
-errors

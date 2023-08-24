@@ -5,11 +5,15 @@ The Memento framework enables datetime negotiation for web resources. Knowing th
 
 The Memento protocol is an HTTP extension that allows clients to request a version of a resource as it existed at a specified time in the past. It is specified in RFC 7089.
 The Memento protocol works by adding two new headers to HTTP requests and responses:
-* Accept-Datetime: This header is used by the client to specify the desired datetime of the resource.
-* Memento-Datetime: This header is used by the server to indicate the datetime of the resource that is being returned.
+
+*  Accept-Datetime: This header is used by the client to specify the desired datetime of the resource.
+*  Memento-Datetime: This header is used by the server to indicate the datetime of the resource that is being returned.
+
 The Memento protocol also defines two new types of resources:
-* TimeGate: A TimeGate is a server that can return Mementos of a resource.
-* TimeMap: A TimeMap is a resource that lists the Mementos of another resource.
+
+*  TimeGate: A TimeGate is a server that can return Mementos of a resource.
+*  TimeMap: A TimeMap is a resource that lists the Mementos of another resource.
+
 To use the Memento protocol, a client would first need to find a TimeGate that can return Mementos of the desired resource. 
 The client would then send an HTTP request to the TimeGate with the Accept-Datetime header set to the desired datetime. 
 The TimeGate would then return a Memento of the resource, or a 404 Not Found response if no Memento exists for the specified datetime.
@@ -21,13 +25,13 @@ And it must also have a piece of software that handles the datetime negotiation 
 The Invenio Memento proxy provide easy way to add TimeGate and TimeMap services to any Invenio installation.
 
 
-There are only two steps to make such web resource Memento compliant.
+There are only two steps to make such web server Memento compliant.
 
 ## Step 1: Setting up Invenio Memento Proxy
 
 # Setup
 
-The Invenio proxy software is downloaded, installed and run from within a Python Virtual Environment.
+The Invenio Memento Proxy software is downloaded, installed and run from within a Python Virtual Environment.
 ```bash
 
 # create virtual env in your custom directory
@@ -44,8 +48,8 @@ $ deactivate
 ```
 
 
-The uWsgi configuration file for a proxy is `timegate.ini` in the `./timegate/conf` folder.
-Edit directories relevant to your installation path
+The uWsgi configuration file for a Invenio Memento proxy is `timegate.ini` in the `./timegate/conf` folder.
+Edit directories according  to your installation path.
 ```bash
 # home of vertual env
 home = /data/venv/timegate/
@@ -66,20 +70,21 @@ Test that service is working:
 ```bash
 curl   http://localhost:9999/timemap/link/https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt 
 ```
-The invenio handler configured for caltech example. Adapt your installation 
-go to ./invenio-memento-proxy/timegate/examples
-and change baseurl to your invenio installation
+The default Invenio Memento proxy configured for caltech example.
+To adapt to your installation of invenio 
+go to ./invenio-memento-proxy/timegate/examples, edit invenio.py 
+with baseurl of  your invenio installation
 
 ```bash
 baseurl = "https://data.caltech.edu/"
 ```
 ### To configure service under nginx
-Change  uWsgi configuration file for a proxy : `timegate.ini` in the `./timegate/conf` folder.
+Change  uWsgi configuration file : `timegate.ini` in the `./timegate/conf` folder.
 ```bash
 daemonize = /data/var/logs/timegate/caltech.log                                                                                                                                                                                        
 pidfile = /data/var/run/timegate/caltech.pid
 ```
-Change to hostname in config.ini in the `./timegate/conf` folder.
+Change  hostname in config.ini in the `./timegate/conf` folder.
 ```bash
 host = http://localhost/
 ```

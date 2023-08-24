@@ -3,24 +3,27 @@ Make your web resources [Memento](http://www.mementoweb.org) compliant in a few 
 
 The Memento framework enables datetime negotiation for web resources. Knowing the URI of a Memento-compliant web resource, a user can select a date and see what it was like around that time.
 
+The Memento protocol is an HTTP extension that allows clients to request a version of a resource as it existed at a specified time in the past. It is specified in RFC 7089.
+The Memento protocol works by adding two new headers to HTTP requests and responses:
+* Accept-Datetime: This header is used by the client to specify the desired datetime of the resource.
+* Memento-Datetime: This header is used by the server to indicate the datetime of the resource that is being returned.
+The Memento protocol also defines two new types of resources:
+* TimeGate: A TimeGate is a server that can return Mementos of a resource.
+* TimeMap: A TimeMap is a resource that lists the Mementos of another resource.
+To use the Memento protocol, a client would first need to find a TimeGate that can return Mementos of the desired resource. 
+The client would then send an HTTP request to the TimeGate with the Accept-Datetime header set to the desired datetime. 
+The TimeGate would then return a Memento of the resource, or a 404 Not Found response if no Memento exists for the specified datetime.
 
 ## Introduction
 
-In order to support Memento, a web server must obviously have accessible archives of its online resources. And it must also have a piece of software that handles the datetime negotiation according to the Memento protocol for those resources.
+In order to support Memento, a web server must obviously have accessible archives of its online resources.
+And it must also have a piece of software that handles the datetime negotiation according to the Memento protocol for those resources.
+The Invenio Memento proxy provide easy way to add TimeGate and TimeMap services to any Invenio installation.
 
 
+There are only two steps to make such web resource Memento compliant.
 
-
-From now on, this documentation will refer to the web server where resources and archives are as the **web server** and to the Memento TimeGate datetime negotiation server as the **TimeGate**.
-
-* Suppose you have a web resource accessible in a web server by some URI. We call the resource the **Original Resource** and refer to its URI as **URI-R**.
-* Suppose a web server has a snapshot of what this URI-R looked like in the past. We call such a snapshot a **Memento** and we refer to its URI as **URI-M**. There could be many snapshots of URI-R, taken at different moments in time, each with their distinct URI-Ms.
-The Mementos do not necessary need to be in the same web server as the Original Resources.
-
-
-There are only two steps to make such resource Memento compliant.
-
-## Step 1: Setting up Invenio Proxy
+## Step 1: Setting up Invenio Memento Proxy
 
 # Setup
 

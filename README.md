@@ -55,7 +55,7 @@ chdir = /home/ludab/invenio-memento-proxy
 # python path
 pythonpath = /data/venv/timegate/lib/python3.8/site-packages
 ```
-To start a proxy,
+### To start a proxy,
 
 ```bash
 $ source /data/venv/timegate/bin/activate
@@ -73,7 +73,7 @@ and change baseurl to your invenio installation
 ```bash
 baseurl = "https://data.caltech.edu/"
 ```
-To configure service under nginx
+### To configure service under nginx
 Change  uWsgi configuration file for a proxy : `timegate.ini` in the `./timegate/conf` folder.
 ```bash
 daemonize = /data/var/logs/timegate/caltech.log                                                                                                                                                                                        

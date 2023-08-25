@@ -47,18 +47,6 @@ $ python setup.py install
 $ deactivate
 ```
 
-
-The uWsgi configuration file for a Invenio Memento proxy is `timegate.ini` in the `./timegate/conf` folder.
-Edit directories according  to your installation path.
-```bash
-# home of vertual env
-home = /data/venv/timegate/
-# directory for project install
-chdir = /home/ludab/invenio-memento-proxy
-
-# python path
-pythonpath = /data/venv/timegate/lib/python3.8/site-packages
-```
 ### To start a proxy,
 
 ```bash
@@ -66,11 +54,22 @@ $ source /data/venv/timegate/bin/activate
 $ uwsgi --http :9999 -s /tmp/mysock.sock --module timegate.application --callable application --virtualenv /home/ludab/timegate/
 ```
 
-Test that service is working:
+###Test that service is working:
 ```bash
 curl   http://localhost:9999/timemap/link/https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt 
+
+curl -I  http:///localhost:9999/timegate/https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt
+HTTP/1.1 302 FOUND
+Server: nginx/1.18.0 (Ubuntu)
+Date: Fri, 25 Aug 2023 00:25:35 GMT
+Content-Type: text/plain; charset=UTF-8
+Content-Length: 0
+Connection: keep-alive
+Vary: accept-datetime
+Location: https://data.caltech.edu/records/tds5b-9rs75/files/README.txt
+Link: <https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt>; rel=original, <http://160.1.118.115/timemap/link/https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt>; rel=timemap; type=application/link-format, <http://160.1.118.115/timemap/json/https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt>; rel=timemap; type=application/json, <https://data.caltech.edu/records/tds5b-9rs75/files/README.txt>; rel="first last memento"; datetime="Mon, 03 Jul 2023 19:57:38 GMT"
 ```
-The default Invenio Memento proxy configured for caltech example.
+### The default Invenio Memento proxy configured for caltech example.
 To adapt to your installation of invenio 
 go to ./invenio-memento-proxy/timegate/examples, edit invenio.py 
 with baseurl of  your invenio installation
@@ -79,11 +78,7 @@ with baseurl of  your invenio installation
 baseurl = "https://data.caltech.edu/"
 ```
 ### To configure service under nginx
-Change  uWsgi configuration file : `timegate.ini` in the `./timegate/conf` folder.
-```bash
-daemonize = /data/var/logs/timegate/caltech.log                                                                                                                                                                                        
-pidfile = /data/var/run/timegate/caltech.pid
-```
+
 Change  hostname in config.ini in the `./timegate/conf` folder.
 ```bash
 host = http://localhost/
@@ -91,17 +86,29 @@ host = http://localhost/
 Add section to nginx config:
 ```bash
 location / {
-                include uwsgi_params;
-                uwsgi_pass unix:///data/var/run/timegate/caltech.sock;
+                #include uwsgi_params;
+                #uwsgi_pass unix:///data/var/run/timegate/caltech.sock;
+                proxy_pass http://localhost:9999;
+		        #proxy_set_header Host $host;
+		        #proxy_set_header X-Real_IP $remote_addr;
         }
 ```        
-To start a proxy,
+
+The also can configure  uWsgi with configuration file  and example of  uWsgi configuration  is `timegate.ini` in the `./timegate/conf` folder.
+Adapt  according  to your installation.
 
 ```bash
-$ source /data/venv/timegate/bin/activate
-$ uwsgi   --module timegate.application --callable application --virtualenv /home/ludab/timegate/
+# home of vertual env
+home = /data/venv/timegate/
+# directory for project install
+chdir = /home/ludab/invenio-memento-proxy
+daemonize = /data/var/logs/timegate/caltech.log                                                                                                                                                                                        
+pidfile = /data/var/run/timegate/caltech.pid
+# python path
+pythonpath = /data/venv/timegate/lib/python3.8/site-packages
 ```
-To restart or stop a proxy,
+
+To restart or stop a proxy if your configured pid file,
 ```bash
 $ uwsgi --reload /data/var/run/timegate/<proxyname>.pid
 

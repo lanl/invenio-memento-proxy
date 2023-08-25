@@ -51,7 +51,7 @@ $ deactivate
 
 ```bash
 $ source /data/venv/timegate/bin/activate
-$ uwsgi --http :9999 -s /tmp/mysock.sock --module timegate.application --callable application --virtualenv /home/ludab/timegate/
+$ uwsgi --http :9999 -s /tmp/mysock.sock --module timegate.application --callable application --virtualenv  /data/venv/timegate/
 ```
 
 ### Test that service is working:
@@ -75,7 +75,7 @@ Link: <https://data.caltech.edu/api/records/tds5b-9rs75/files/README.txt>; rel=o
 
 To adapt to your installation of invenio 
 go to ./invenio-memento-proxy/timegate/examples, edit invenio.py 
-with baseurl of  your invenio installation
+with baseurl of  your invenio installation, restart service.
 
 ```bash
 baseurl = "https://data.caltech.edu/"
@@ -113,6 +113,7 @@ pythonpath = /data/venv/timegate/lib/python3.8/site-packages
 
 To restart or stop a proxy if your configured pid file,
 ```bash
+$ uwsgi --ini   /home/ludab/invenio-memento-proxy/timegate/conf/timegate.ini 
 $ uwsgi --reload /data/var/run/timegate/<proxyname>.pid
 
 $ uwsgi --stop /data/var/run/timegate/<proxyname>.pid

@@ -83,6 +83,8 @@ baseurl = "https://data.caltech.edu/"
 ### To configure service under nginx
 
 Change  hostname in config.ini in the `./timegate/conf` folder.
+
+
 ```bash
 host = http://localhost/
 ```
@@ -96,6 +98,8 @@ location / {
 		        #proxy_set_header X-Real_IP $remote_addr;
         }
 ```        
+As a note if your want to config nginx with  location /caltech , change host = http://localhost/caltech in config.ini
+
 
 You also can configure  uWsgi with configuration file  and example of  uWsgi configuration  is `timegate.ini` in the `./timegate/conf` folder.
 Adapt  according  to your installation. 

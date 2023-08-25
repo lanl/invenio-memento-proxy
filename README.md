@@ -97,8 +97,8 @@ location / {
         }
 ```        
 
-The also can configure  uWsgi with configuration file  and example of  uWsgi configuration  is `timegate.ini` in the `./timegate/conf` folder.
-Adapt  according  to your installation.
+You also can configure  uWsgi with configuration file  and example of  uWsgi configuration  is `timegate.ini` in the `./timegate/conf` folder.
+Adapt  according  to your installation. 
 
 ```bash
 # home of vertual env
